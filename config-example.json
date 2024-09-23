@@ -1,0 +1,13 @@
+{
+  "mqtt_server": "",
+  "mqtt_username": "",
+  "mqtt_password": "",
+  "topics": {
+    "ttnmpapper": "",
+    "ttnplants": ""
+  },
+  "logLevel": {
+    "test": "debug",
+    "production": "info"
+  }
+}

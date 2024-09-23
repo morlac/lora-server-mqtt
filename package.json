@@ -1,0 +1,22 @@
+{
+  "name": "lora-server-mqtt",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "lorawan server receiving data via mqtt",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node lora-server-mqtt.js"
+  },
+  "author": "Christian Adams <morlac@morlac.de>",
+  "license": "MIT",
+  "dependencies": {
+    "app-root-path": "^3.1.0",
+    "debug": "^4.3.7",
+    "magic-globals": "^0.9.1",
+    "mqtt": "^5.10.1",
+    "postgres": "^3.4.4",
+    "winston": "^3.14.2",
+    "winston-daily-rotate-file": "^5.0.0"
+  }
+}
