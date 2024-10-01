@@ -1,0 +1,15 @@
+[Unit]
+Description = Lora Server MQTT 
+
+[Service]
+WorkingDirectory = %h/Documents/Projects/lora-server-mqtt
+ExecStart = /usr/bin/npm start 
+
+Restart = always
+RestartSec = 10
+
+[Install]
+WantedBy = default.target
+
+# vim: set ft=systemd :
+
