@@ -38,15 +38,15 @@ const get_topic = function get_topic(): string {
 /**
  *
  */
-const down_link = function down_link(message: string, packet: mqtt_packet) {
-  logger.debug("message: [%o] packet: [%o]", message, packet);
+const down_link = function down_link(message: Buffer, packet: mqtt_packet) {
+  logger.debug("message: [%o] packet: [%o]", message, packet, { filifu: __filename });
 };
 
 /**
  *
  */
-const up_link = function up_link() {
-  logger.debug("");
+const up_link = function up_link(topic: string, message: Buffer, packet: mqtt_packet) {
+  logger.debug("topic: [%o], message: [%o], packet: [%o]", topic, message, packet, { filifu: __filename });
 };
 
 /**

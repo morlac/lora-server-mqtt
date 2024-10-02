@@ -36,7 +36,7 @@ const init = function init(config: configType, serviceList: Array<ttnService>) {
   });
 
   mqtt_status.client.on("connect", () => {
-    logger.info("connected ..");
+    logger.info("connected ..", { filifu: __filename });
 
     interface topics_object {
       [key: string]: any;
@@ -45,58 +45,65 @@ const init = function init(config: configType, serviceList: Array<ttnService>) {
     let topics: topics_object = {};
 
     mqtt_status.serviceList.forEach((service: ttnService) => {
-      mqtt_status.topicList[service.get_topic()] = service;
-      topics[service.get_topic()] = { qos: 0 };
+      let topic_head = service.get_topic();
+      topics[topic_head] = { qos: 0 };
+
+      topic_head = topic_head.substring(0, topic_head.indexOf("/"));
+      mqtt_status.topicList[topic_head] = service;
     });
 
     mqtt_status.client.subscribe(topics, (err: Error, grant: any): void => {
       if (err) {
-        logger.error("[%o]", err);
+        logger.error("[%o]", err, { filifu: __filename });
       }
 
       if (grant) {
-        logger.info("grant: [%o]", grant);
+        logger.info("grant: [%o]", grant, { filifu: __filename });
       }
     });
   });
 
   mqtt_status.client.on(
     "message",
-    (topic: string, message: string, packet: mqtt.Packet): void => {
+    (topic: string, message: Buffer, packet: mqtt.Packet): void => {
       // message is Buffer
       logger.debug(
-        "topic: [%o], message: [%o] packet: [%o]",
+        "message: topic: [%o], message: [%o] packet: [%o]",
         topic,
-        message,
+        JSON.parse(message.toString()),
         packet,
+        { filifu: __filename },
       );
 
-      //TODO: if topic is one of the listed call down_link-function of matching service
+      let topic_head = topic.substring(0, topic.indexOf("/"));
+      logger.debug("topic_head: [%o]", topic_head, { filifu: __filename });
+
+      mqtt_status.topicList[topic_head].up_link(topic, message, packet);
     },
   );
 
   mqtt_status.client.on("packetreceive", (packet: mqtt.Packet): void => {
-    logger.debug("packet: [%o]", packet);
+    logger.debug("packetreceive: packet: [%o]", packet, { filifu: __filename });
   });
 
   mqtt_status.client.on("close", (): void => {
-    logger.debug("close ..");
+    logger.debug("close ..", { filifu: __filename });
   });
 
   mqtt_status.client.on("offline", (): void => {
-    logger.debug("offline ..");
+    logger.debug("offline ..", { filifu: __filename });
   });
 
   mqtt_status.client.on("disconnect", (): void => {
-    logger.debug("disconnect ..");
+    logger.debug("disconnect ..", { filifu: __filename });
   });
 
   mqtt_status.client.on("end", (): void => {
-    logger.debug("end ..");
+    logger.debug("end ..", { filifu: __filename });
   });
 
   mqtt_status.client.on("error", (err: Error): void => {
-    logger.error("[%o]", err);
+    logger.error("[%o]", err, { filifu: __filename });
   });
 };
 

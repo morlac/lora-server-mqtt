@@ -13,8 +13,8 @@ import mqtt from "mqtt";
 export type ttnService = {
   init: (config: configType) => void;
   get_topic: () => string;
-  down_link: (message: string, packet: mqtt.Packet) => void;
-  up_link: () => void;
+  down_link: (message: Buffer, packet: mqtt.Packet) => void;
+  up_link: (topic: string, message: Buffer, packet: mqtt.Packet) => void;
   shutdown: () => void;
 };
 
