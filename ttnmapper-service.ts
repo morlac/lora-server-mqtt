@@ -21,9 +21,11 @@ let status: status_object = {};
  *
  */
 const init = function init(config: configType) {
-  logger.info("starting with topic: [%o]", config.services.ttnmapper.topic, {
-    filifu: __filename,
-  });
+  logger.info(
+    "init: starting with topic: [%o]",
+    config.services.ttnmapper.topic,
+    { filifu: __filename },
+  );
 
   status["topic"] = config.services.ttnmapper.topic;
 };
@@ -40,7 +42,7 @@ const get_topic = function get_topic(): string {
  */
 const down_link = function down_link(message: Buffer, packet: mqtt_packet) {
   logger.debug(
-    "down_link: message: [%o], packet: [%o]",
+    "down_link: message: [%o] packet: [%o]",
     JSON.parse(message.toString()),
     packet,
     { filifu: __filename },

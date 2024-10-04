@@ -21,10 +21,11 @@ let status: status_object = {};
  *
  */
 const init = function init(config: configType) {
-  logger.info("starting with topic: [%o]", config.services.ttnmapper.topic, {
-    filifu: __filename,
-  });
+  logger.info(
+    "init: starting with topic: [%o]",
     config.services.ttnenvironment.topic,
+    { filifu: __filename },
+  );
 
   status["topic"] = config.services.ttnenvironment.topic;
 };
@@ -40,14 +41,29 @@ const get_topic = function get_topic(): string {
  *
  */
 const down_link = function down_link(message: Buffer, packet: mqtt_packet) {
-  logger.debug("message: [%o] packet: [%o]", message, packet, { filifu: __filename });
+  logger.debug(
+    "down_link: message: [%o] packet: [%o]",
+    JSON.parse(message.toString()),
+    packet,
+    { filifu: __filename },
+  );
 };
 
 /**
  *
  */
-const up_link = function up_link(topic: string, message: Buffer, packet: mqtt_packet) {
-  logger.debug("topic: [%o], message: [%o], packet: [%o]", topic, message, packet, { filifu: __filename });
+const up_link = function up_link(
+  topic: string,
+  message: Buffer,
+  packet: mqtt_packet,
+) {
+  logger.debug(
+    "up_link: topic: [%o] message: [%o] packet: [%o]",
+    topic,
+    JSON.parse(message.toString()),
+    packet,
+    { filifu: __filename },
+  );
 };
 
 /**
