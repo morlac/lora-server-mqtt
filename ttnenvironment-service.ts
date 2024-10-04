@@ -24,8 +24,9 @@ const init = function init(config: configType) {
   logger.info("starting with topic: [%o]", config.services.ttnmapper.topic, {
     filifu: __filename,
   });
+    config.services.ttnenvironment.topic,
 
-  status["topic"] = config.services.ttnmapper.topic;
+  status["topic"] = config.services.ttnenvironment.topic;
 };
 
 /**
