@@ -31,7 +31,7 @@ const init = function init(config: configType) {
 /**
  *
  */
-const get_topic = function get_topy(): string {
+const get_topic = function get_topic(): string {
   return status.topic;
 };
 
