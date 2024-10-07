@@ -4,6 +4,7 @@
  */
 
 import mqtt from "mqtt";
+import path from "path";
 
 import logger from "./utils/logger.js";
 
@@ -46,10 +47,15 @@ const init = function init(config: configType, serviceList: Array<ttnService>) {
 
     mqtt_status.serviceList.forEach((service: ttnService) => {
       let topic_head = service.get_topic();
-      topics[topic_head] = { qos: 0 };
+      topics[path.join(mqtt_status.config.prefix, topic_head)] = { qos: 0 };
 
       topic_head = topic_head.substring(0, topic_head.indexOf("/"));
-      mqtt_status.topicList[topic_head] = service;
+      mqtt_status.topicList[path.join(mqtt_status.config.prefix, topic_head)] =
+        service;
+    });
+
+    logger.debug("topicList: [%o]", Object.keys(mqtt_status.topicList), {
+      filifu: __filename,
     });
 
     mqtt_status.client.subscribe(topics, (err: Error, grant: any): void => {
@@ -75,15 +81,21 @@ const init = function init(config: configType, serviceList: Array<ttnService>) {
         { filifu: __filename },
       );
 
-      let topic_head = topic.substring(0, topic.indexOf("/"));
+      let topic_head = topic.substring(0, topic.indexOf("/", 5));
       logger.debug("topic_head: [%o]", topic_head, { filifu: __filename });
 
-      mqtt_status.topicList[topic_head].up_link(topic, message, packet);
+      mqtt_status.topicList[topic_head].up_link(
+        topic.replace(mqtt_status.config.prefix + "/", ""),
+        message,
+        packet,
+      );
     },
   );
 
   mqtt_status.client.on("packetreceive", (packet: mqtt.Packet): void => {
     logger.debug("packetreceive: packet: [%o]", packet, { filifu: __filename });
+
+    // TODO: implement callbacks for packet.cmd [pingresp, ..]
   });
 
   mqtt_status.client.on("close", (): void => {
